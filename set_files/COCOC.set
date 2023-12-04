@@ -1,0 +1,49 @@
+ SETTING FILE "co1.SET" 27.07.1993
+
+delta_t=        10e-6
+datafile=       COCOC.000
+channel_no=     1
+no_samples=     1000000
+noise_file=     none
+sigma_noise=    400
+stepresponse=   exp.mat
+
+model parameters K:
+5 5
+0	16000	0	0	0
+8000	0	4000	0	0
+0	2000	0	1000	0
+0	0	500	0	250
+0	0	0	125	0
+
+
+indices of the parameters in K to be fitted:
+8  2
+1  2
+2  1
+2  3
+3  2
+3  4
+4  3
+4  5
+5  4
+
+initial state distribution (t=0):
+1 5
+0.2 0.2 0.2 0.2 0.2
+
+assignment states <-> output symbols:
+1 5
+2	1	2	1	2
+
+output level in DAC units, depending on symbol:
+1 2
+20000    22000
+
+Summe der Wahrscheinlichkeitsdichten aller Kanaele:
+2 3
+2048     2076	2204    
+20	   20 	  20
+
+
+  
