@@ -1,0 +1,386 @@
+2023_11_14 2DFit 2.1.1
+-Fixed saving of comined 2DHistograms and time series. Header was not written correctly.
+-Upgraded headers to include noise type and step response used. The step response name is taken from the matlab file.
+ The noise type distinguished between lpWhite, spectral, and fromTS. Also, fixed header of time series to include the _ts tag, 2Dhistograms to include _2D, and the combination to include _ts2D.
+In sim_fit.c: too large to note. See code.
+
+2023_11_03 2DFit 2.1.0
+
+-Adapted scaling of the step response to be compatible with the recorded step response for a sampling rate of 100 kHz (and only for 100 kHz)
+In channel.c:
+changed to: Beitrag = 1 - Sprungantwort[lDt]* 0.1; from: Beitrag = 1 - (Sprungantwort[lDt+1]*(dDt-lDt)+ Sprungantwort[lDt] * (lDt + 1 - dDt)) * 0.1;
+
+-Corrected seed generation for rates rng. Was not working properly when using parallel computing
+In gtksig.c:
+changed to: int seed =	time(&nu)*myid; from: int seed = time(&nu)+ myid + myid << 24;
+
+-Adapted the check that ensures the spectrum is at least as long as the timeseries --> Now ensures that the spectrum is at least as long as half of the time series.
+This is enough to compute the noise timeseries. The algorithm expects the spectrum up to f_sampling/2 for the real and imaginary part, including the zero frequency.
+In rausch.c:
+changed to: if (2*length_spectrum < Daten.Anz_Samples) from: if (length_spectrum < Daten.Anz_Samples)
+
+-Adapted sampling interval for the recorded step response
+In simulat.c:
+changed to: dT_filter = (1 / (double)Daten.SimSettings.sampling_frequency); from: dT_filter=1.0754e-6  * 50000 * 0.25 / ((double)Daten.SimSettings.filter_frequency/(double)Daten.SimSettings.sampling_frequency) / f_3dB_digfi;
+
+-Added the option to compute multiple 2D-dwell-time-histograms for a given time series, with different level settings for the HOHD.
+
+In daten.c:
+added:  Daten.starting_level = 300;
+ 	Daten.level_increment = 100;
+ 	Daten.number_of_levels= 3;
+
+Note that these settings are hard coded for now.
+
+added new file: MultiLevel2D.c
+It handles the computation of multiple 2D-dwell-time-histograms at different detector levels
+
+added option in settings.ini to enable/disable the mutlilevel histogram computation
+#2D-Fit error calculation 1=2D; 2=AmplitudeHistogram; 3=2D*AmplitudeHistogram, default=3, 4=multi level / multiple 2D-histograms, default = 1
+
+
+
+2023_02_03_ Linux64
+added option for spectral noise (record noise->generate spectral file->load spectral file->generate noise via ifft)
+changed settings.ini (added noise genration option), the spetral file (no length byte, 2^N data points) must have at least as many points as the noise series.
+added fft.h/fft.c
+in makenoise.c 
+
+
+2022_11_18 Linux64
+Making changes to reinstall experimental noise. Noise files are now loaded fron settings.ini instead from setfile. 
+
+settings.h:
+// char    noisefile[255];  TObias 2022 noisefile is now loaded via settings.ini
+   bool file_noise_series_loaded;					//Tobias 2022
+
+datentobias.c:
+ // SimSettings.noisefile[0] = 0; //Tobias 2022
+
+ 
+simulat.c:
+  rausch->makenoise(Daten.SimSettings.noise_length, 
+  		    Daten.SimSettings.sampling_frequency, 
+  		    Daten.SimSettings.filter_frequency, 
+  		    Daten.SimSettings.resample,
+  		    Daten.Geneticfitparameter.file_noise_series);  		//Tobias 2022 
+  		    
+sim_fit_dialogs.c:
+/*    Tobias 2022
+    textbuf1 = Setfile.get_rausch_filename(NULL); 
+
+    if (strspn(textbuf1,"none") > 2)
+       {
+        Daten.SimSettings.noisefile[0]=0;
+        if (!Daten.Geneticfitparameter.mpi_support)
+        	  std::cout<<"generating artificial noise"<<std::endl; 
+       }
+    else
+       {
+    	  strcpy(Daten.SimSettings.noisefile, textbuf1);
+    	 }
+*/ 
+
+sim_fit.c:
+   std::cout<<"simulating noisefile: "<<Daten.Geneticfitparameter.file_noise_series<<std::endl;		//Tobias 2022
+   logout<<"simulating noisefile: "<<Daten.Geneticfitparameter.file_noise_series<<std::endl;			//Tobias 2022  
+   result_out<<"noisefile "<<Daten.Geneticfitparameter.file_noise_series<<" ";    								//Tobias 2022   	
+   
+rausch.h:
+unsigned long int for length of noise series
+//unsigned long int length_noiseseries_load; 		//Tobias 2022 long int   
+// char storefilename[255];				//Tobias 2022
+
+rausch.c:
+if (strcmp(filename,"none") != 0) 
+   {			
+    if (Daten.Geneticfitparameter.file_noise_series_loaded == false) //Tobias 2022
+      {
+       load_noisefile(filename);
+       Daten.Geneticfitparameter.file_noise_series_loaded = true;
+      } 
+   }     
+else
+	 {
+	 	if (resample)
+	 		{
+	 		 initial_array();
+       create_distribution();
+       create_lowpass(sampling_frequency, filter_frequency);     
+      }
+    else
+    	{
+    	 if (!fitinaction)
+    	 {
+    	 	initial_array();
+        create_distribution();
+        create_lowpass(sampling_frequency, filter_frequency);
+        fitinaction = true;
+    	 }		
+      }	    
+	 }
+       
+
+2022_04_05
+
+sim_fit.c:
+  /*Tobias 2022
+  addmarker = 4096;
+  for (i=1; i <= Daten.SimSettings.repeats; i++)
+    {
+     if (addmarker == 4096)
+       addmarker = 0;	
+     else
+       addmarker = 4096;  
+  */  
+
+//nun folgt eine Routine von olli für das Anlegen der Markertabelle 
+/*Tobias 2022
+  j=0;
+  guint16   suchmark;
+ 
+  TMarkBits mark(Daten.Wert[0]>>12, 0 , FALSE); // 3.Parameter Erweiterung von Tobias
+  Daten.Marker.push_back(mark);
+  
+  // oberste 4bit nach recht schieben, so dass werte von 0 bis 0xF 
+  suchmark = Daten.Wert[0] >> 12; // fuer vergleich mit neuem marker!
+  Daten.Wert[0] &= 0x0fff; //marker in obersten 4bit loeschen
+
+  // weitere Datensätze nach neuen markern durchsuchen
+  for (j=1;j < Daten.Anz_Samples;j++)
+  { 
+    // neuer marker, neuer eintrag
+    if ((Daten.Wert[j] >> 12) != suchmark)
+    {
+      TMarkBits mark(Daten.Wert[j] >> 12, j, FALSE); 
+      Daten.Marker.push_back(mark);
+      suchmark = Daten.Wert[j] >> 12; // fuer vergleich mit neuem marker!
+    }
+    // dann markerbits loeschen
+    Daten.Wert[j] &= 0x0fff; // marker liegt in obersten 4bit
+  }
+// Olli fertig
+*/
+
+delare.h:
+typedef gint32 Tampl_histo_type[65536]; 	//Tobias 2022
+
+daten.c:
+	/*Tobias 2022
+    if ((awert & 0xF000) != 0)
+    {
+    // kann eigentlich nicht mehr sein!, 
+	// marker wurden aus oberen bits extrahiert und diese dann zurueckgesetzt
+    warning((char *)"corrupt data");
+    std::cout<<"i: "<<i<<"Wert: "<<awert<<std::endl;
+    }
+    awert &= 0x0FFF;
+  */  
+  
+  
+simulat.c:
+int AD_Bits = 16; //Tobias 2022
+
+
+daten.c
+void
+TDaten::ampl_min_max(Tampl_histo_type a, gint16 &min, gint16 &max)          
+{
+// minimaler und maximaler strom werden berechnet
+gint16 i;
+gint16 breite;
+gint32 one_percent;
+gint32 sum;
+
+  // THistoDaten
+  min = 0;
+  while (a[min]==0)
+  {
+    min++;
+    if (min==65536) break;
+  }
+  max = 65535;
+  while (a[max]==0)
+  {
+    max--;
+    if (max==-1) break;
+  };
+  if (min >= max)
+  {
+    min=0;
+    max=0;
+    return;
+  }
+  sum=0;
+  for (i=min;i<max+1;i++) sum+=a[i];
+  one_percent = sum / 100;
+  sum=0;
+  while (sum < one_percent)
+  {
+    if (min >=65536) break;
+    sum+=a[min];
+    min++;
+  }
+  min--;
+  sum=0;
+  while (sum < one_percent)
+  {
+    if (max <= 0) break;
+    sum+=a[max];
+    max--;
+  }
+  max++;
+  while ((min>0) && (a[min] != 0)) min--;
+  while ((max<65536) && (a[max] != 0)) max++;
+  if (max < min + 50)
+    if (max < 2000) {max+=50;} else {min-=50;}
+  breite= max-min+1;
+  min = min - breite / 4;
+  max = max + breite / 4;
+  if (min < 0) min =0;
+  if (max > 65535) max = 65535;
+  Settings.CurrentFrom = min;
+  Settings.CurrentTo = max;
+
+//BEGIN KARSTEN
+Minimaler_Strom=min;
+Maximaler_Strom=max;
+//END KARSTEN
+
+}
+
+daten.C:
+  for (i=0;i < 65536;i++) ahisto[i] = 0;
+  for (i=0;i < 65536;i++) bhisto[i] = 0;
+  strom_min = 0;
+  strom_max = 0;
+  
+2022_04_12
+sim_fit.c:
+multiprocessor_master():
+ Sleep(50);				//Sleep(size*10+50);
+ 
+multiprocessor_slave():
+ Sleep(myID % 40);		//Sleep(myID*10);
+ //Sleep(100); 																	//kann weg?
+ 
+void multiprocessor_master_save_timeseries():
+ Sleep(50);		// Sleep(size*10+50);
+  //Sleep(100); 																	//kann weg?	
+
+2022_02_14
+dwell2d.c
+  // Tobias 2021 reordered -> jump list 1./2./3. position 
+  iter1 = vec_ptr->begin();
+  iter2 = vec_ptr->begin();
+  iter3 = vec_ptr->begin();
+  if (iter1 == vec_ptr->end())
+  	return;
+  iter2++;
+  if (iter2 == vec_ptr->end())
+  	return;
+  iter3++;
+  iter3++;  
+  if (iter3 == vec_ptr->end())
+  	return;
+
+
+
+2022_02_07
+diverse changes in
+simfit.c
+	void multiprocessor_master_save_timeseries() <-replace
+	void multiprocessor_slave_save_timeseries()	 <-replace
+	
+	1384:
+  if (Daten.Geneticfitparameter.fit_methode == 1)		//2D fit
+  	{
+     if (Daten.calculate_error == 0)
+  	   ga.maximize();			//LogLikelihood
+     else	
+       ga.minimize();			//Chi square
+    }        
+  if (Daten.Geneticfitparameter.fit_methode == 2)		//amplitude histogram fit
+  	ga.minimize();				
+  if (Daten.Geneticfitparameter.fit_methode == 3)		//2022 LLH is devided by amplitude error while CHI2 is multiplied   
+  	ga.minimize();	
+
+
+
+
+
+
+
+
+datentobias.h
+//new random generator with distributions
+std::random_device os_seed; 		//for os dependent seed, does now work with mingw
+std::mt19937 random_engine;		//Mersenne twister 64 bit
+std::uniform_real_distribution<double> uni_01{0,1};
+std::uniform_real_distribution<double> uni_11{-1,1}; 
+
+
+gtksig.c  						
+if (Daten.Geneticfitparameter.init_random == 0)		//randomized timer 
+	{
+	 guint32 seed =	time(&nu)+ myid + myid << 24; // seeding with time + id (lower bits) + id (higher bits)
+   Daten.random_engine.seed(seed);											//random initializing of generator
+   GARandomSeed(Daten.uni_01(Daten.random_engine));												//same for GA
+  }
+else
+	{
+	 Daten.random_engine.seed(Daten.Geneticfitparameter.init_random);	//determined random sequence
+   GARandomSeed(Daten.Geneticfitparameter.init_random);	
+  }	
+
+
+sim_fit.c
+399:
+if (Daten.Geneticfitparameter.init_random != 0)
+  {
+   random_engine.seed(Daten.Geneticfitparameter.init_random);
+  } 
+1797:uni_01(random_engine)
+1812:uni_01(random_engine)
+1813:uni_01(random_engine)
+1828:uni_01(random_engine)
+
+rausch.c
+ 52:
+void TRausch::create_distribution()
+{
+ guint32 i;
+ tnoiseseries_padding = new gdouble[length_noiseseries+2*extralength+6]; //create temporary noise series that will be filtered and transfered to noiseries
+ for(i=0; i < (length_noiseseries+2*extralength); i++)
+  { 
+   tnoiseseries_padding[i] = snd_01(random_engine);
+  }   
+   
+ for(i=0; i < length_noiseseries; i++) 
+ 		tnoiseseries[i] = tnoiseseries_padding[i+extralength];
+}
+
+143: uni_11(random_engine)
+
+simulat.c
+243: uni_01(random_engine)
+253: 
+std::uniform_int_distribution<unsigned long int> uni_start{0,rausch->length_noiseseries}; 
+r_pos = uni_start(random_engine);
+291:fdummy = snd_01(random_engine);		//standard normal distribution (0,1)
+
+chanell.c
+59:uni_01(random_engine)
+85:uni_01(random_engine)
+100:uni_01(random_engine)
+312:snd_01(random_engine)
+
+320: GNDRND(weg)
+
+channel.h
+weg gdouble GNDrnd(); //new rnd generator with gaussian normal distribution to replace gasdev(numerical recipes), Tobias 2018
+
+several changes:
+resample=TRUE
+simfit.c 677:
+  Daten.SimSettings.noise_length = Daten.Anz_Samples;
