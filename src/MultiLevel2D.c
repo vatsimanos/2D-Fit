@@ -2,7 +2,7 @@
  *  2D HPC fit
  *  2023 AG HUth
  *  based on Uwe Kirst-> daytest, Oliver Radomski-> C++ implementation + 2D-histograms and Tobias Huth-> 2D fit
- *  FAU Erlangen-Nürnberg
+ *  FAU Erlangen-Nï¿½rnberg
  *******************************************************************/
 
 #include <iostream>
@@ -21,7 +21,8 @@ TMultiLevel2D::TMultiLevel2D(int starting_level, int level_increment, int number
 void TMultiLevel2D::generate_matrix_2D_exp()
 {   
 	int i;
-		  
+	double original_base = Daten.a_fit.i_null;
+	double original_amp = Daten.a_fit.i_channel;
      	
   for (i=0;i < m_number_of_levels;i++)	
      {
@@ -30,8 +31,9 @@ void TMultiLevel2D::generate_matrix_2D_exp()
         			Daten.Fitparameter.log_max_close, 
    	          Daten.Fitparameter.log_min_open, 
   				    Daten.Fitparameter.log_max_open, 
-  				    Daten.Fitparameter.bins_per_log);    
-  		Daten.a_fit.i_channel = m_starting_level + i*m_level_increment;		    
+  				    Daten.Fitparameter.bins_per_log);
+  		Daten.a_fit.i_null =  original_base + 0.25*original_amp*(-1+i);
+		Daten.a_fit.i_channel = original_amp - 0.25*original_amp*(-1+i);  	    
      	Daten.hinkley(_HOHD);		
      	Daten.Dwell_2d_ptr->addjumps(Daten.Dwell_1d_ptr);
      	//std::cout<<"level: "<<Daten.a_fit.i_channel<<" nr_of events: "<<Daten.Dwell_2d_ptr->events()<<std::endl;
@@ -43,6 +45,10 @@ double TMultiLevel2D::return_2d_matrix_LLH()
 {
 	 int i;
 	 double likelihood_2d{};
+	 //std::cout<<"original: "<<original_sigma<<std::endl;
+
+	double original_base = Daten.a_fit.i_null;
+	double original_amp = Daten.a_fit.i_channel;
 
 	 for (i=0;i < m_number_of_levels;i++)	
 	 	{
@@ -52,11 +58,12 @@ double TMultiLevel2D::return_2d_matrix_LLH()
   				        Daten.Fitparameter.log_min_open, 
   				        Daten.Fitparameter.log_max_open, 
   				        Daten.Fitparameter.bins_per_log);
-  	  Daten.a_fit.i_channel = m_starting_level + i*m_level_increment;		    
+  	    Daten.a_fit.i_null =  original_base + 0.25*original_amp*(-1+i);
+		Daten.a_fit.i_channel = original_amp - 0.25*original_amp*(-1+i);    
      	Daten.hinkley(_HOHD);		
      	Daten.Dwell_2d_ptr->addjumps(Daten.Dwell_1d_ptr);
      	likelihood_2d += Daten.Dwell_2d_MA[i].lnlikelihood(Daten.Dwell_2d_B);	   
-     	//std::cout<<"level: "<< m_starting_level + i*m_level_increment<<" likelihood_2d: "<<likelihood_2d<<std::endl;   
+     	//std::cout<<"base: "<< Daten.a_fit.i_null <<" amp: "<<Daten.a_fit.i_channel<<" i: "<<i<<std::endl;   
 	  }	
  return likelihood_2d;	  
 }
