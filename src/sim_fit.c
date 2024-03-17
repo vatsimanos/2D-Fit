@@ -142,16 +142,20 @@ if (Daten.Geneticfitparameter.init_random != 0)
   
   for (i=0;i < Daten.Anz_Samples;i++)
         ampl_simul[Daten.Wert[i]]++;
-       
-  for (i=0;i < 65536; i++)									//2014 Test level default 0 -> <65536
-        histogram_diff = histogram_diff +(ampl_simul[i]-Daten.original_ampl_histogram[i])*(ampl_simul[i]-Daten.original_ampl_histogram[i]);  
 
+   //double temp = 0;
+  for (i=0;i < 65536; i++){								//2014 Test level default 0 -> <65536
+        histogram_diff = histogram_diff +(ampl_simul[i] - Daten.original_ampl_histogram[i])*(ampl_simul[i] - Daten.original_ampl_histogram[i]);
+        //temp = temp +Daten.original_ampl_histogram[i];
+  }
+         //std::cout<<"sum:"<<temp<<std::endl; 
   
 
   if (Daten.Geneticfitparameter.fit_methode == 4) 	//create multi level 2d-histograms of experimental time series
  		{
  	 	 likelihood_2d = multilevel2D.return_2d_matrix_LLH();	
  	 	 error = likelihood_2d;
+       //std::cout<<"error :"<<error<<std::endl; 
     }	 
   else
   	{
@@ -161,11 +165,23 @@ if (Daten.Geneticfitparameter.init_random != 0)
     
   if (Daten.Geneticfitparameter.fit_methode == 1)
     error = likelihood_2d;
+   //std::cout<<"error :"<<error<<std::endl; 
+
   if (Daten.Geneticfitparameter.fit_methode == 2)
     error = histogram_diff;
+    
   if (Daten.Geneticfitparameter.fit_methode == 3)
-  	 if (Daten.calculate_error == 0)
-  	 	 error = likelihood_2d / histogram_diff;								// Tobias 2018 maximizing likelihood_2d now 
+  	 if (Daten.calculate_error == 0){
+      //std::cout<<"likelihood_2d :"<<likelihood_2d<<std::endl;
+      //td::cout<<"histogram_diff :"<<histogram_diff<<std::endl; 
+      //double factor = std::pow(10,8); //Efthymios 2024 to make the two loss scores comparable
+  	 	 //error = likelihood_2d + factor/ histogram_diff;
+       error = 1 + (likelihood_2d / (2*Daten.Anz_Samples*log(2*Daten.Anz_Samples))) - (histogram_diff / (2*Daten.Anz_Samples*Daten.Anz_Samples)); //Efthymios 2024 normalized individual losses to make them comparable
+       //std::cout<<"upper :"<<(likelihood_2d / (2*Daten.Anz_Samples*log(2*Daten.Anz_Samples)))<<std::endl;  
+       //std::cout<<"lower :"<<(histogram_diff / (2*Daten.Anz_Samples*Daten.Anz_Samples))<<std::endl;  
+       //std::cout<<"error :"<<error<<std::endl;  
+
+      }								// Tobias 2018 maximizing likelihood_2d now 
   	 else	  
        error = likelihood_2d * histogram_diff;						   //Tobias 2018 other option: log(likelihood_2d) + log(histogram_diff);
 
@@ -946,7 +962,7 @@ void multiprocessor_fit()
  //std::cout<<"numprocs"<<numprocs<<" myID:"<<myID<<std::endl;
  if (myID == 0)
         { 	          
-         if (Daten.SaveTimeseries.automated >= 1  and Daten.SaveTimeseries.automated <= 3)
+         if (Daten.SaveTimeseries.automated >= 1  and Daten.SaveTimeseries.automated <= 4)
          	  multiprocessor_master_save_timeseries(); // Tobias 2020
          else	  
          		multiprocessor_master();
@@ -955,7 +971,7 @@ void multiprocessor_fit()
         } 
  else       
         {
-         if (Daten.SaveTimeseries.automated >= 1  and Daten.SaveTimeseries.automated <= 3)
+         if (Daten.SaveTimeseries.automated >= 1  and Daten.SaveTimeseries.automated <= 4)
          	  multiprocessor_slave_save_timeseries(); // Tobias 2020
          else	  	  	
        	    multiprocessor_slave();
@@ -1033,9 +1049,13 @@ std::this_thread::sleep_for(std::chrono::milliseconds(50));		//Tobias test 2022 
     }        
   if (Daten.Geneticfitparameter.fit_methode == 2)		//amplitude histogram fit
   	ga.minimize();				
-  if (Daten.Geneticfitparameter.fit_methode == 3)		//2022 LLH is devided by amplitude error while CHI2 is multiplied   
-  	ga.minimize();	
-
+  if (Daten.Geneticfitparameter.fit_methode == 3){		//2022 LLH is devided by amplitude error while CHI2 is multiplied   
+   if (Daten.calculate_error == 0)
+  	   ga.maximize();			//LogLikelihood         //Efthymios 2024 fixed to maximize objecitve function when using combi of  LLH and amphist 
+     else	
+       ga.minimize();			//Chi square   
+    }    
+  
   
   GANoScaling scaling;
   ga.scaling(scaling);
@@ -1410,6 +1430,16 @@ void multiprocessor_master_save_timeseries() // Tobias 2020
  	   save_name.append(std::to_string(dth_size));
  	   save_name.append(".dat");	 				 	
  	  }
+ else if (Daten.SaveTimeseries.automated == 4)
+ 	  {
+ 	   std::cout<<" 2D-histograms"<<std::endl;
+ 	   total_size = header_size + 9*dth_size;
+ 	   save_name.append("_header_");
+ 	   save_name.append(std::to_string(header_size)); 
+ 	   save_name.append("_2DtH_");
+ 	   save_name.append(std::to_string(9*dth_size));
+ 	   save_name.append(".dat");	 			
+ 	  } 	 
  else 
  	  {
    	 std::cout<<"option for dataset generation not supported"<<std::endl; 	
@@ -1461,8 +1491,10 @@ void multiprocessor_master_save_timeseries() // Tobias 2020
         		  int progress = received % (Daten.SaveTimeseries.number / 100+1);  	
               if (progress == 0)		               
                 std::cout<<"data saved: "<<received<<std::endl; 		
-              received++;    	
+              received++;   
+              //std::cout<<"**********************"<<received<<std::endl; 	
               MPI_Send(Ratenkonstanten, Setfile.get_no_rconst()+3, MPI_DOUBLE, status.MPI_SOURCE, 1, MPI_COMM_WORLD); 
+              //std::cout<<"**********************"<<received<<std::endl; 	
              }        
       }
    
@@ -1587,12 +1619,12 @@ std::cout<<"min SNR:"<<Daten.SaveTimeseries.min_noise<<" max SNR: "<<Daten.SaveT
   
     if (Daten.SimSettings.dosbox) 
     	std::cout<<"myID:"<<std::setw(5)<<myID<<" on "<<std::setw(8)<<processor_name<<" ";
-    		
+
+
+      ergebnis[1] = simulation(Daten.Fitparameter.multiplikator, 0, Ratenkonstanten, 0);
+
  		
-    ergebnis[1] = simulation(Daten.Fitparameter.multiplikator, 0, Ratenkonstanten, 0);
- 
-    
-    
+
 
     save_name = "";	 
 
@@ -1696,6 +1728,7 @@ save_name.append(dummy2);
       header_size = save_name_2D.length();
       dth_count = (Daten.Fitparameter.log_max_close-Daten.Fitparameter.log_min_close)*Daten.Fitparameter.bins_per_log*
    					(Daten.Fitparameter.log_max_open-Daten.Fitparameter.log_min_open)*Daten.Fitparameter.bins_per_log;
+
       dth_size = dth_count*sizeof (Daten.Dwell_2d_B.CO[0][0]);	
 
 
@@ -1728,6 +1761,8 @@ save_name.append(dummy2);
     	}
     			
    else if (Daten.SaveTimeseries.automated == 3) // transfer header + timeseries + 2D histogram to master
+
+
     	{
 
          save_name_ts2D = save_name; 
@@ -1769,12 +1804,97 @@ save_name.append(dummy2);
     		delete[] buffer;  	
     		delete[] temp_buffer; 	 	
     	}
+  
+  
+  
+   else if (Daten.SaveTimeseries.automated == 4)  // transfer header + 2D multi level histogram to master
+    	{    		
+
+      save_name_2D = save_name;   
+      save_name_2D.append("_2Dmult");
+      save_name_2D.append(".000000000");
+      dummy = std::to_string(int(Ratenkonstanten[0]));
+      save_name_2D.replace(save_name_2D.length()-dummy.length(), dummy.length(), dummy);		// add number
+      save_name_2D.resize(1000,'+');
+      header_size = save_name_2D.length();
+      dth_count = (Daten.Fitparameter.log_max_close-Daten.Fitparameter.log_min_close)*Daten.Fitparameter.bins_per_log*
+         (Daten.Fitparameter.log_max_open-Daten.Fitparameter.log_min_open)*Daten.Fitparameter.bins_per_log;
+            
+      dth_size = 9*dth_count*sizeof (Daten.Dwell_2d_B.CO[0][0]);
+      double levels[9] = {-0.4, -0.3, -0.2, -0.1, -0.0, 0.1, 0.2, 0.3, 0.4};
+
+         
+         double original_base = Daten.a_fit.i_null;
+         double original_amp = Daten.a_fit.i_channel;
+         total_size = header_size + dth_size;
+    		unsigned char *buffer = new unsigned char[total_size];
+
+         double *temp_buffer = new double[9*dth_count];		
+
+
+
+    		//std::cout<<"total_size: "<<total_size<<std::endl;
+    		for (ii=0; ii < header_size; ii++)
+    	     buffer[ii] = save_name_2D.at(ii);															//transfer header into trasnfer buffer
+							//temp buffer for dwell-time data
+
+
+               int i;
+             for (i=0;i < 9;i++)	//9 levels
+         {
+           
+ 
+  	      Daten.a_fit.i_null =  original_base + original_amp*levels[i];
+		   Daten.a_fit.i_channel = original_amp - original_amp*levels[i];    
+     	   Daten.hinkley(_HOHD);		
+     	   Daten.Dwell_2d_ptr->addjumps(Daten.Dwell_1d_ptr);
+         //std::cout<<"level: "<<Daten.a_fit.i_channel<<" nr_of events: "<<Daten.Dwell_2d_ptr->events()<<std::endl;
+            //std::cout<<"level: "<<Daten.a_fit.i_channel<<" nr_of events: "<<Daten.Dwell_2d_ptr->events()<<std::endl;
+            									//temp buffer for dwell-time data
+				ii=0;
+				for (int id=0;id < (Daten.Fitparameter.log_max_close-Daten.Fitparameter.log_min_close)*Daten.Fitparameter.bins_per_log;id++)			//transfer dwell-time data into temp buffer
+    				 	 for (int jd=0;jd < (Daten.Fitparameter.log_max_open-Daten.Fitparameter.log_min_open)*Daten.Fitparameter.bins_per_log;jd++)
+									{
+	  						 	 temp_buffer[i*dth_count + ii] = Daten.Dwell_2d_B.CO[id][jd];
+
+                         //if(i == 2){
+                          // if(temp_buffer[i*dth_count + ii]>0){
+                         //std::cout<<"dummy: "<<ii<<" : "<<temp_buffer[i*dth_count + ii]<<std::endl;
+                         //std::cout<<"dummy2: "<<ii<<" : "<<Daten.Dwell_2d_B.CO[id][jd]<<std::endl;
+                          // }
+                         //}
+                         ii++;
+									}
+         }	
+
+    		std::memcpy(&buffer[header_size], &temp_buffer[0], dth_size);	
+
+    	  MPI_Send(buffer,             			/* message buffer */
+                 total_size,             			/* nr of data items */
+                 MPI_UNSIGNED_CHAR,           			/* data item is a char */
+             	   0,              			/* destination process rank */
+                 1,           				/* user chosen message tag */
+                 MPI_COMM_WORLD);
+
+                 //std::cout<<"buffer: "<<buffer<<std::endl;	
+                 //std::cout<<"total_size: "<<total_size<<std::endl;	
+                 //std::cout<<"MPI_UNSIGNED_CHAR: "<<MPI_UNSIGNED_CHAR<<std::endl;	
+                 //std::cout<<"MPI_COMM_WORLD: "<<MPI_COMM_WORLD<<std::endl;		       
+
+    		delete[] buffer; 
+    		delete[] temp_buffer;
+         	
+    	}
+
+
    else
    	  {
    	  std::cout<<"option for dataset generation not supported"<<std::endl; 	
    	  return;	
    	  }	                          
    }
+
+    
    
 }
 
