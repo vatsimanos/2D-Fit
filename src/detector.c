@@ -37,6 +37,8 @@ std::cout<<"----"<<std::endl;
     
   lastmin=alastmin;
   p = (m-m0) / 2;
+
+  //std::cout<<"m: "<<m<<std::endl;	
   SNR= ((2*p)/(parent->a_fit.sigma)) * ((2*p)/(parent->a_fit.sigma));
   lambda=parent->schranke(round(0.5 + parent->ScTiRe/ SNR),filter_ord, fabs(p));
 }
@@ -190,6 +192,7 @@ bool schleife=false;
 inline int 
 Thohdetector::Vorzeichen(double x)
 {	
+  //std::cout<<"item.lambda: "<<std::endl;	
   if (x >= 0) return 1; else return -1;
 }
 
@@ -212,6 +215,8 @@ Thohdetector::CheckJ(Tsingledetector &item)
 	std::cout<<"----"<<std::endl;	
   if ((item.h[filter_ord] > item.lambda) && !(item.jump))
   {
+
+    //std::cout<<"item.lambda: "<<item.lambda<<std::endl;	
     new_model = index(item, detectors);
 
 	jump = true;

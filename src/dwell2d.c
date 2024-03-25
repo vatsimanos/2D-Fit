@@ -1446,18 +1446,23 @@ TDwell_2d::lnlikelihood(TDwell_2d &simul)
 
   double faktors = 1.0 /Daten.Fitparameter.multiplikator; //Tobias,  Normierung nicht auf die Anzahl der events, sondern auf die L\E4nge der Zeitreihe
 
-
+//long int helper = 0;
+//long int helperSimu = 0;
 if (Daten.calculate_error == 0)
   {  	
    //Originalcode von OLLI nach Magleby&Weiss
     for ( j=0; j < (log_max_close - log_min_close) * bins_per_log(); j++)
      {
        for ( k=0; k < (log_max_open - log_min_open) * bins_per_log(); k++)
-         {
+         { //helper = helper + CO[j][k];
+            //helperSimu = helperSimu +simul. CO[j][k];
 	  if ((simul.CO[j+simul_close_off][k+simul_open_off] != 0) && (CO[j+close_off][k+open_off] != 0))
 	    {
+             
              back += log(simul.CO[j+simul_close_off][k+simul_open_off]/  simul.events()  * events() ) * CO[j+close_off][k+open_off];   //Tobias 2018:  without normalization on number of events the fit prefers fast rates, with normalization the term becomes <1, together with 0 as possible results it does not converge / simul.events()
-            // std::cout<<j<<":"<<k<<":"<<back<<std::endl;																						  //Magleby & Weiss have simulated a defined number of events equalling the measured data. Otherwise the LLh does not work, because there is no penalty for to much events
+             //std::cout<<"events(): "<<events()<<std::endl;
+             //std::cout<<"helper: "<<helper<<std::endl;
+             //std::cout<<"helperSimu: "<<helperSimu<<std::endl;																						  //Magleby & Weiss have simulated a defined number of events equalling the measured data. Otherwise the LLh does not work, because there is no penalty for to much events
 	    }																																								  //M & W was modifed by a factor events() incorporating the measured events as normalization. 
 	 } 	   
      }

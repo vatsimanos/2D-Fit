@@ -244,7 +244,7 @@ int i,j,k,m;
  
  Daten.starting_level = 300;
  Daten.level_increment = 100;
- Daten.number_of_levels= 3;
+ Daten.number_of_levels= 10;
   
 }
 

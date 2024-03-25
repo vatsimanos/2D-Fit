@@ -256,7 +256,9 @@ unsigned short int TKanal_digfi::Strom(double Zeit)
     {
         //std::cout<<"Sprungantwort.Stuetzpunkte:"<< Sprungantwort.Stuetzpunkte <<std::endl;
 
-        Beitrag = 1 - Sprungantwort[lDt]* 0.1; //Efthymios 2023 old: Beitrag = 1 - (Sprungantwort[lDt+1]*(dDt-lDt)+ Sprungantwort[lDt] * (lDt + 1 - dDt)) * 0.1; 
+        //Beitrag = 1 - Sprungantwort[lDt]* 0.1;
+        //Efthymios 2023 old: Beitrag = 1 - (Sprungantwort[lDt+1]*(dDt-lDt)+ Sprungantwort[lDt] * (lDt + 1 - dDt)) * 0.1;
+        Beitrag = 1 - (Sprungantwort[lDt+1]*(dDt-lDt)+ Sprungantwort[lDt] * (lDt + 1 - dDt)) * 0.1; 
         //adapted since  recorded step response is sampled at 100 kHz and there is no need to scale it since simulations are also at 100 kHz. 
         //Therefore: needs to be adapted if sampling frequency deviates from 100 kHz             
             

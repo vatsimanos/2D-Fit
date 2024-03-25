@@ -19,7 +19,6 @@
 
 
 
-
 //f�r den simplex
 #define TINY 1.0e-10  //A small number.
 #define GET_PSUM \

@@ -103,8 +103,17 @@ TDaten::HOHD()
 double  lambda;
 
   SNR = a_fit.i_channel / a_fit.sigma;
+  //std::cout<<"a_fit.i_channel  :"<<a_fit.i_channel <<std::endl;
+  //std::cout<<"a_fit.sigma  :"<<a_fit.sigma <<std::endl;
+  
+  
   SNR = SNR * SNR;
   lambda = schranke(round(0.5 + ScTiRe / (SNR)), result.filter_ord, 0.5);
+  //std::cout<<"lambda :"<<lambda<<std::endl; 
+  //std::cout<<"lambda :"<<lambda<<std::endl; 
+  //std::cout<<"ScTiRe :"<<ScTiRe<<std::endl; 
+  //std::cout<<"SNR :"<<SNR<<std::endl; 
+  //std::cout<<"result.filter_ord :"<<result.filter_ord<<std::endl; 
   HOHD_S(lambda);
 }
 
@@ -151,6 +160,10 @@ int  n_open_bla = 0;
       lastmin = i;
     } else {
       g_up[0] = (z - a_fit.i_null) / a_fit.i_channel - 0.5 - u_act;
+       //std::cout<<"a_fit.i_null :"<<a_fit.i_null<<std::endl;
+       //std::cout<<"a_fit.i_channel :"<<a_fit.i_channel<<std::endl;
+       //std::cout<<"u_act :"<<u_act<<std::endl;
+
       cumsum(g_up, result.filter_ord);
       if (g_up[1] <= 0)
       {
@@ -171,7 +184,8 @@ int  n_open_bla = 0;
       }
     }
     if ((g_up[result.filter_ord] > lambda) && (u_act != a_fit.n_channels))
-    {
+    {     //std::cout<<"g_up[result.filter_ord] :"<<g_up[result.filter_ord]<<std::endl; 
+           //std::cout<<"lambda :"<<lambda<<std::endl; 
       i = lastmin;
       lastmax = i;
       flush_Sprung(_HOHD, HOHD_Spruenge, i, u_act, true, n_open_bla, n_open_bla, n_open_bla, n_open_bla);
@@ -194,22 +208,36 @@ int  n_open_bla = 0;
 
 double 
 TDaten::schranke(int t_res, int ord, double half_jump_magnitude)
-{
+{//std::cout<<"start :"<<std::endl; 
 g_type  g;
 int  i, t;
 double lambda;
 
-  for (i=0;i <= ord;i++) g[i] = 0.0;
-  g[0] = half_jump_magnitude;           // half jump magnitude
+  for (i=0;i <= ord;i++)
+  {
+    g[i] = 0.0;
+    //std::cout<<"g[i] :"<<g[i]<<std::endl; 
+  }
+    //std::cout<<"t_res :"<<t_res<<std::endl; 
+    g[0] = half_jump_magnitude; // half jump magnitude
+    //std::cout<<"g[0] :"<<g[0]<<std::endl;                      
   for (t=1;t <= t_res;t++) cumsum(g,ord);
-  lambda = g[ord];
-  g[0] = -half_jump_magnitude;          // nach dem event steigt g[ordd] noch weiter !!!
+    lambda = g[ord];
+    //std::cout<<"lambda :"<<lambda<<std::endl; 
+    g[0] = -half_jump_magnitude;          // nach dem event steigt g[ordd] noch weiter !!!
+  
   for (t=1;t <= t_res;t++)              // solange wird g_up nicht nullgesetzt
   {
     cumsum(g,ord);
     if (g[ord] > lambda) lambda = g[ord];
+    //std::cout<<"g[ord] :"<<g[ord]<<std::endl; 
   }
+
   neu_t_res = t_res * Settings.Samplininterval;
+
+  //std::cout<<"lambda :"<<lambda<<std::endl;
+  //std::cout<<"end :"<<std::endl; 
+
   return lambda;
 }
 
