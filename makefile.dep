@@ -1,0 +1,233 @@
+bessel.o: src/bessel.c src/bessel.h
+channel.o: src/channel.c src/channel.h src/datarray.h src/daten.h \
+ src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h
+datarray.o: src/datarray.c src/datarray.h src/daten.h src/gtkapp.h \
+ src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/patchio.h
+daten2.o: src/daten2.c src/daten.h src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/detector.h src/error.h src/round.h src/testout.h
+daten.o: src/daten.c src/daten.h src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/detector.h src/error.h src/round.h src/setfile.h \
+ src/patchio.h src/timeseries.h src/err.h src/channel.h src/datarray.h \
+ src/rausch.h src/gtkfunc.h src/datentobias.c
+datentobias.o: src/datentobias.c
+declare.o: src/declare.c src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/daten.h src/gtkapp.h src/fit.h src/matu.h src/dwell.h \
+ src/SimSettings.h src/matrix2.h src/datentobias.h src/round.h
+detector.o: src/detector.c src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/daten.h src/gtkapp.h src/fit.h src/matu.h src/dwell.h \
+ src/SimSettings.h src/matrix2.h src/datentobias.h src/detector.h \
+ src/error.h src/round.h
+dwell2d.o: src/dwell2d.c src/daten.h src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/gtkfunc.h src/error.h
+err.o: src/err.c src/err.h
+error.o: src/error.c
+fft.o: src/fft.c src/fft.h
+filter.o: src/filter.c src/filter.h src/matrix2.h src/daten.h \
+ src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/datentobias.h
+fit.o: src/fit.c src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/gtkapp.h src/error.h src/y_shut.h \
+ src/steady.h
+gtkfunc.o: src/gtkfunc.c src/gtkfunc.h src/daten.h src/gtkapp.h src/fit.h \
+ src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/error.h
+gtkmain.o: src/gtkmain.c src/gtkapp.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/daten.h src/fit.h src/matu.h src/dwell.h \
+ src/SimSettings.h src/matrix2.h src/datentobias.h src/gtkfunc.h
+gtksig.o: src/gtksig.c src/gtkapp.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/daten.h src/fit.h src/matu.h src/dwell.h \
+ src/SimSettings.h src/matrix2.h src/datentobias.h src/gtkfunc.h \
+ src/round.h src/steuerung.h src/error.h src/sim_fit.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/ga.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gaconfig.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GASimpleGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GABaseGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gaid.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAParameter.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gatypes.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/std_stream.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAStatistics.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gaerror.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAEvalData.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAPopulation.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GASelector.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAScaling.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GASStateGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAIncGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GADemeGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GADCrowdingGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA1DBinStrGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GABinStr.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/garandom.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA2DBinStrGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA3DBinStrGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GABin2DecGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gabincvt.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA1DArrayGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAArray.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAAllele.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAAllele.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA1DArrayGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAMask.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA2DArrayGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA2DArrayGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA3DArrayGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA3DArrayGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAListGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAList.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAListBASE.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GANode.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAList.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAListGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATreeGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATree.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATreeBASE.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATree.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATreeGenome.C \
+ src/setfile.h src/patchio.h src/timeseries.h src/err.h src/channel.h \
+ src/datarray.h src/rausch.h
+matrix2.o: src/matrix2.c src/matrix2.h src/daten.h src/gtkapp.h src/fit.h \
+ src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/datentobias.h
+matu.o: src/matu.c src/matu.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h
+MultiLevel2D.o: src/MultiLevel2D.c src/MultiLevel2D.h src/daten.h \
+ src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h
+patchio.o: src/patchio.c src/patchio.h src/daten.h src/gtkapp.h src/fit.h \
+ src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h
+rausch.o: src/rausch.c src/rausch.h src/gtkfunc.h src/daten.h \
+ src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/datarray.h src/bessel.h src/fft.h
+setfile.o: src/setfile.c src/setfile.h src/patchio.h src/daten.h \
+ src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/timeseries.h src/err.h src/channel.h \
+ src/datarray.h src/rausch.h src/gtkfunc.h src/simulat.c
+sim_fit.o: src/sim_fit.c src/sim_fit.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/ga.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gaconfig.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GASimpleGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GABaseGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gaid.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAParameter.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gatypes.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/std_stream.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAStatistics.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gaerror.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAEvalData.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAPopulation.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GASelector.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAScaling.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GASStateGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAIncGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GADemeGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GADCrowdingGA.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA1DBinStrGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GABinStr.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/garandom.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA2DBinStrGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA3DBinStrGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GABin2DecGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/gabincvt.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA1DArrayGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAArray.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAAllele.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAAllele.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA1DArrayGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAMask.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA2DArrayGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA2DArrayGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA3DArrayGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GA3DArrayGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAListGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAList.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAListBASE.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GANode.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAList.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GAListGenome.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATreeGenome.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATree.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATreeBASE.h \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATree.C \
+ /home/hpc/b109dc/b109dc10/KielPatch_spec_2/galib247/ga/GATreeGenome.C \
+ src/gtkfunc.h src/daten.h src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/setfile.h src/patchio.h src/timeseries.h src/err.h \
+ src/channel.h src/datarray.h src/rausch.h src/sim_fit_dialogs.c \
+ src/MultiLevel2D.h
+sim_fit_dialogs.o: src/sim_fit_dialogs.c
+simulat.o: src/simulat.c
+steady.o: src/steady.c src/steady.h
+steuerung.o: src/steuerung.c src/steuerung.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/daten.h src/gtkapp.h src/fit.h src/matu.h src/dwell.h \
+ src/SimSettings.h src/matrix2.h src/datentobias.h src/error.h \
+ src/round.h
+testout.o: src/testout.c src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/fit.h
+timeseries.o: src/timeseries.c src/timeseries.h src/patchio.h src/daten.h \
+ src/gtkapp.h src/fit.h src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/matu.h src/dwell.h src/SimSettings.h src/matrix2.h \
+ src/datentobias.h src/err.h
+y_shut.o: src/y_shut.c src/declare.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi.h \
+ /apps/SPACK/0.17.0/opt/linux-almalinux8-icelake/gcc-11.2.0/openmpi-4.1.2-rao6zuptml5ehr6kpsayn5vwkyxlmglu/include/mpi_portable_platform.h \
+ src/matrix.h src/steady.h src/y_shut.h src/matu.h
