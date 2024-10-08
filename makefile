@@ -2,9 +2,9 @@
 
 
 
-SRCDIR = /home/hpc/b109dc/b109dc10/2DFit_slot1/src
-OBJDIR = /home/hpc/b109dc/b109dc10/2DFit_slot1/obj/
-BINDIR = /home/hpc/b109dc/b109dc10/2DFit_slot1/obj/
+SRCDIR = ~/2DFit/src/
+OBJDIR = ~/2DFit/obj/
+BINDIR = ~/2DFit/obj/
 BINFILE= 2DFit64
 
 CC = mpic++	#gcc c/c++ #mpiicpc #mpic++
@@ -13,9 +13,9 @@ VPATH = %.o $(OBJDIR)
 VPATH = $(SRCDIR)
 
 
-INCDIRS = -I /home/hpc/b109dc/b109dc10/2DFit_slot1/galib247
+INCDIRS = -I ~/2DFit/galib247
  
-LIBDIRS = -L /home/hpc/b109dc/b109dc10/2DFit_slot1/galib247/ga 
+LIBDIRS = -L ~/2DFit/galib247/ga 
 DEFS = -Dcplusplus #-Ddebug_simulat #-Ddebug_mem_matrix2 #-Ddebug_mem_patchio #-Ddebug_mem_datarray #-Ddebug_mem_setfile #-Ddebug_mem_rausch #-Ddebug_mem_simulat  #-Ddebug_datarray #-Ddebug_simulat  #-DFORTIFY 
 
 CFLAGS =  -O2 -march=native $(DEFS) $(INCDIRS)  #-O3 -march=native -pipe #`--cflags --pkg-config libs gtk+-3.0`
